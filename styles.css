@@ -1,0 +1,313 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-image: url(./images/tim-umphreys-6x1zA_0H9LA-unsplash.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  font-size: 16px;
+  font-family: 'Inconsolata', monospace;
+  color: white;
+  z-index: -1;
+  
+}
+
+
+@media only screen and (min-width: 992px) {
+  body {
+    font-size: 18px;
+  }
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+ul {
+  list-style-type: none;
+}
+/* BREAKPOINST
+  768px
+  992px
+  1298px
+
+*/
+
+h3 {
+  display: inline-block;
+  padding: 0.25rem;
+  font-size: 2.5rem;
+  border-bottom: 2px solid white;
+}
+
+.name {
+  position: relative;
+  top: -100px;
+  opacity: 0;
+  animation: fadeIn 1s ease 1 forwards;
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    top: 0;
+    opacity: 1;
+  }
+}
+
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+@media only screen and (min-width: 992px) {
+ .container {
+   width: 70%;
+ }
+}
+.nav {
+  width: 100%;
+  background: black;
+  position: fixed;
+  top: 0;
+  z-index: 10;  
+}
+.nav ul {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.nav ul li {
+  font-size: 1.5rem;
+  padding: 1rem 0.5rem;
+  cursor: pointer;
+}
+
+.nav ul li a:hover {
+  border-bottom: 1px solid white;
+}
+
+.showcase {
+  display: flex;
+  flex-direction : column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+  font-size: 1.25rem;
+}
+
+.showcase h1 {
+  font-size: 5rem;
+  margin: 7rem 0;
+}
+
+.skills {
+  margin: 10rem auto;
+}
+.skills_line {
+  margin: 0.5rem 0px;
+  width: 7rem;
+  height: 5px;
+  background: white;
+  border-radius: 20px;
+}
+
+.skills__items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+  gap: 3rem;
+  place-items: center;
+  margin: 2rem 0;
+}
+
+.skills__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 5rem;
+  height: 5rem;
+}
+
+.skills__item > img {
+  width: 100%;
+}
+.skills__item > i {
+  font-size: 3.5rem;
+}
+.skills__item > p {
+  font-size: 1.25rem;
+}
+.other__skills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 3rem 0px;
+
+}
+.other__skills > p {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+
+
+/* TOP PROJECTS */
+
+.projects {
+  margin: 7rem auto;
+}
+
+.topproject__items {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0;;
+}
+
+.project__item {
+  display: flex;
+  background: white;
+  border-radius: 20px;
+  color: black;
+  margin: 1rem 0;
+}
+
+
+.img__container {
+  display: flex;
+  margin: auto;
+  overflow: hidden;
+  width: 50%;
+  height: 100%;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.project__info {
+  padding: 10px 1rem;
+}
+.project__info > h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+.project__info > p {
+  font-size: 1rem;
+  margin: 10px 0px;
+}
+.project__info > p > a {
+  color: blue;
+}
+
+.project__info .stack {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+
+.show_more {
+  display: inline;
+  font-size: 1.25rem;
+  border-bottom: 1px solid white;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 662px) {
+  .project__item {
+    flex-direction: column;
+  }
+  .img__container {
+    
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 20px;
+    border-bottom-left-radius: 0px ;
+  }
+  .project__info .stack > img{
+    width: 1rem;
+    height: 1rem;
+  }
+  
+}
+
+
+.separator {
+  margin: 7rem auto;
+  height: 5px;
+  background: white;
+  border-radius: 20px;
+}
+
+.contact {
+  margin: 7rem auto;
+  
+}
+
+.contact > form {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+}
+.contact > form > input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.contact > form > textarea {
+  width: 100%;
+  padding: 0.5rem;
+}
+.contact > form > button {
+  width: 25%;
+  font-size: 1.25rem;
+  border: 3px solid white;
+  color: white;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  background: transparent;
+  margin-left: auto;
+  margin-top: 1rem;
+}
+.contact > form > button:hover {
+  background: black;
+}
+
+@media only screen and (max-width: 662px) {
+  .contact > form {
+    width: 90%;
+  }
+}
+
+.social-links {
+  margin: 7rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-link {
+  width: 3.25rem;
+  cursor: pointer;
+  padding: 5px;
+  margin: 0px 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
