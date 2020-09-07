@@ -33,8 +33,8 @@ const projects = [
     name: 'RecipeApp',
     description: 'Get Food recipes',
     stack: ['React', 'MaterialUI', 'Responsive'],
-    websiteURL: 'https://uberClone.netlify.app/',
-    githubURL: 'https://github.com/webstar-code/UberClone'
+    websiteURL: 'https://apprecipe.herokuapp.com/',
+    githubURL: 'https://github.com/webstar-code/recipe'
   },
   {
     name: 'PubgClone',
