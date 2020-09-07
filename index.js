@@ -3,7 +3,7 @@ AOS.init();
 const topprojects = [
   {
     name: 'Travel Log',
-    imageURl: './images/project_images/travel_log_middle.png',
+    imageURl: './images/project_images/travle_log_middle.png',
     description: 'Mark your favorites places you visited',
     stack: ['React', 'Nodejs', 'express', 'mongoDB'],
     websiteURL: 'https://travel-log-app-ebon.now.sh/',
@@ -19,7 +19,7 @@ const topprojects = [
   },
   {
     name: 'SciCalculator',
-    imageURl: './images/tim-umphreys-6x1zA_0H9LA-unsplash.jpg',
+    imageURl: './images/project_images/Sci-calculator.png',
     description: 'Quickly Calcualte the physics formulas --Dark mode Available',
     stack: ['Html', 'css', 'Js'],
     websiteURL: 'https://sci-calculator.netlify.app/',
