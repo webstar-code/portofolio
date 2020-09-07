@@ -5,9 +5,10 @@
 }
 
 body {
-  background-image: url(./images/tim-umphreys-6x1zA_0H9LA-unsplash2.jpg);
+  /* background-image: url(./images/tim-umphreys-6x1zA_0H9LA-unsplash2.jpg);
   background-size: cover;
-  background-attachment: fixed;
+  background-attachment: fixed; */
+  background-color: #1c161d;
   font-size: 16px;
   font-family: 'Inconsolata', monospace;
   color: white;
