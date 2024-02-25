@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto_Mono } from "next/font/google";
 import "../styles/globals.css";
 import { ThemeProvider } from "@/component/providers";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Roboto_Mono({ subsets: ["latin"] });
 
@@ -24,6 +25,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
