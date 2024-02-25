@@ -12,7 +12,7 @@ export default function Home() {
           <div className="w-[3px] h-full bg-red"></div>
         </div>
         <div className="w-[80%] md:w-[75%] xl:w-[70%] max-w-4xl h-full flex flex-col gap-10 pt-20 px-4">
-          <h2 className="text-base">hi, i am bhavesh choudhary and i'm</h2>
+          <h2 className="text-base">hi, i am bhavesh choudhary and i&nbsp;m</h2>
           <h1 className="text-3xl md:text-4xl font-normal leading-relaxed md:leading-relaxed">on a mission to craft exceptional digital experiences</h1>
           <Projects />
         </div>
