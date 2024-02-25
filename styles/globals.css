@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 5% 95%;
+    --foreground: 0 0% 4%;
+    --red: 0 100% 45%;
+    --yellow: 37 98% 53%;
+  }
+
+  .dark {
+    --background: 0 0% 4%;
+    --foreground: 0 5% 95%;
+    --red: 0 100% 45%;
+    --yellow: 37 98% 53%;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
