@@ -14,9 +14,7 @@ export async function GET() {
     return isoString.substring(0, 10);
   }
   const currentDate = getISODateString();
-  console.log(currentDate);
   const url = `https://wakatime.com/api/v1/users/current/summaries?start=${currentDate}&end=${currentDate}&api_key=${process.env.WAKA_KEY}`
-  console.log(url);
   try {
     return await fetch(url)
       .then(res => res.json())
