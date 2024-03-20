@@ -14,7 +14,9 @@ export async function GET() {
     return isoString.substring(0, 10);
   }
   const currentDate = getISODateString();
+  console.log(currentDate);
   const url = `https://wakatime.com/api/v1/users/current/summaries?start=${currentDate}&end=${currentDate}&api_key=${process.env.WAKA_KEY}`
+  console.log(url);
   try {
     return await fetch(url)
       .then(res => res.json())
@@ -27,15 +29,18 @@ export async function GET() {
           start: result.start,
           end: result.end,
         }
+        console.log(newDoc);
         const query = Create(Ref(Collection("daily"), currentDate.replaceAll("-", "")), {
           data: {
             ...newDoc
           },
         })
         const response = await client.query(query) as any;
+        console.log(response)
         return NextResponse.json({ data: response.data.data }, { status: 200 })
       })
   } catch (err) {
+    console.log(err)
     return NextResponse.json({ error: err, message: "Internal server error" }, { status: 500 })
   };
 
