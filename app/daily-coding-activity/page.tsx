@@ -127,7 +127,7 @@ export default function DailyCodingActivity() {
   )
 }
 
-export const Cursor = ({ variant, containerMeta, children }: { variant: string, containerMeta: { height: number, x: number, y: number }, children?: React.ReactNode }) => {
+const Cursor = ({ variant, containerMeta, children }: { variant: string, containerMeta: { height: number, x: number, y: number }, children?: React.ReactNode }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
