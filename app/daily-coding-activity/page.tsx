@@ -107,6 +107,7 @@ export default function DailyCodingActivity() {
             <div ref={firstElementRef}></div>
             {data.map((day, i) =>
               <div
+                key={Date.now()}
                 onMouseOver={() => barEntering(day)}
                 onMouseLeave={() => barExiting()}
                 className='h-full px-1 flex items-end'>
@@ -189,4 +190,5 @@ const DayIndicator = forwardRef(({ customRef, dataPoint, height }: { customRef: 
     </div>
   )
 })
+DayIndicator.displayName = "DayIndicator";
 
