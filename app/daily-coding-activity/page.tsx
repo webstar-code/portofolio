@@ -1,5 +1,5 @@
 'use client'
-import { getDailyActivityData } from '@/db';
+import { getAllTimeHours, getDailyActivityData } from '@/db';
 import { motion, useInView } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -22,8 +22,14 @@ export default function DailyCodingActivity() {
   const isEndInView = useInView(lastElementRef)
   const [dataPoints, setDataPoints] = useState<{ [key: string]: DataPoint }>({});
   const [maxDecimal, setMaxDecimal] = useState(0);
+  const [allTimeText, setAllText] = useState("");
 
   useEffect(() => {
+    getAllTimeHours().
+      then((result) => {
+        const startDate = new Date(result.start_date).toLocaleString('default', { month: 'long', year: 'numeric' });
+        setAllText(`${(result.total_seconds / 3600).toFixed()} hrs since ${startDate}`)
+      })
     getDailyActivityData()
       .then(result => {
         const decimals = result.map((d) => Number(d.data.decimal));
@@ -118,7 +124,7 @@ export default function DailyCodingActivity() {
       <div className="container h-full bg-background text-foreground py-6 flex flex-col">
         <div className="w-[90%] mx-auto flex items-center justify-between">
           <h3 className="text-base text-foreground">daily coding activity</h3>
-          <p>3023 hours since april 2020</p>
+          <p>{allTimeText}</p>
         </div>
         <div className="w-full h-full flex flex-col grow items-center justify-center">
           <motion.div
