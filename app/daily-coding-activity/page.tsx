@@ -1,11 +1,10 @@
 'use client'
+import { getDailyActivityData } from '@/db';
 import { motion, useInView } from 'framer-motion';
-import { forwardRef, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-interface DataPoint {
+export interface DataPoint {
   date: string,
-  hours: number,
-  minutes: number,
   decimal: number,
   text: string
 }
@@ -21,6 +20,30 @@ export default function DailyCodingActivity() {
   const scrollingContainerRef = useRef<HTMLDivElement>(null);
   const isFirstInView = useInView(firstElementRef)
   const isEndInView = useInView(lastElementRef)
+  const [dataPoints, setDataPoints] = useState<{ [key: string]: DataPoint }>({});
+  const [maxDecimal, setMaxDecimal] = useState(0);
+
+  useEffect(() => {
+    getDailyActivityData()
+      .then(result => {
+        const decimals = result.map((d) => Number(d.data.decimal));
+        const max = Math.max(...decimals);
+        setMaxDecimal(max * 1.5)
+        let obj = {};
+        result.forEach((doc: any) =>
+          // @ts-ignore 
+          obj[`${new Date(doc.data.date).toLocaleDateString()}`] = {
+            date: new Date(doc.data.date).toLocaleDateString(),
+            decimal: Number(doc.data.decimal),
+            text: doc.data.text,
+          }
+        )
+        setDataPoints(obj);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }, []);
 
   useEffect(() => {
     const today = new Date();
@@ -42,9 +65,8 @@ export default function DailyCodingActivity() {
       }
     }
     setData(datesArray.map((i) => {
-      return ({ date: i.toLocaleDateString(), decimal: 0, hours: 0, minutes: 0, text: "" })
-    }
-    ).reverse());
+      return ({ date: i.toLocaleDateString(), decimal: 0, text: "0 secs" })
+    }).reverse());
   }, []);
 
 
@@ -93,7 +115,7 @@ export default function DailyCodingActivity() {
           </div>
         }
       </Cursor>
-      <div className="container h-full  bg-background text-foreground py-6 flex flex-col">
+      <div className="container h-full bg-background text-foreground py-6 flex flex-col">
         <div className="w-[90%] mx-auto flex items-center justify-between">
           <h3 className="text-base text-foreground">daily coding activity</h3>
           <p>3023 hours since april 2020</p>
@@ -103,18 +125,17 @@ export default function DailyCodingActivity() {
             ref={scrollingContainerRef}
             initial={{ x: -500 }}
             animate={{ x: scrollPos }}
-            className="min-h-[256px] flex justify-start items-end border border-foreground">
+            className="h-[256px] flex justify-start items-end">
             <div ref={firstElementRef}></div>
             {data.map((day, i) =>
               <div
-                key={Date.now()}
-                onMouseOver={() => barEntering(day)}
+                key={i}
+                onMouseOver={() => barEntering(dataPoints[day.date as string] || day)}
                 onMouseLeave={() => barExiting()}
                 className='h-full px-1 flex items-end'>
                 <DayIndicator
-                  height={normalize(day.decimal, 0, 5, 0, scrollingContainer.height)}
-                  customRef={null}
-                  dataPoint={day}
+                  height={normalize(dataPoints[day.date as string]?.decimal || 0, 0, maxDecimal, 0, scrollingContainer.height)}
+                  dataPoint={dataPoints[day.date as string] || day}
                   index={i}
                 />
               </div>
@@ -175,20 +196,20 @@ const Cursor = ({ variant, containerMeta, children }: { variant: string, contain
   );
 };
 
-const DayIndicator = forwardRef(({ customRef, dataPoint, height }: { customRef: any, dataPoint: DataPoint, height: number, index: number }) => {
+const DayIndicator = ({ dataPoint, height = 0 }: { dataPoint: DataPoint, height: number, index: number }) => {
   const date = new Date(dataPoint.date);
   return (
     <div
-      ref={customRef}
-      style={{ height: height || 40 }}
+      key={dataPoint.date}
+      style={{ height: height + 20 }}
       className={`relative w-[1px] bg-foreground z-10`}>
-      <div className={`absolute bottom-0 w-[1px] h-10 ${date.getDate() === 1 ? "bg-red" : "bg-foreground"} z-20`}></div>
+      <div className={`absolute bottom-0 w-[1px] h-5${date.getDate() === 1 ? "bg-red" : "bg-foreground"} z-20`}></div>
       <div className={`absolute top-[105%] left-0 -translate-x-1/2`}>
         {date.getDate() == 1 &&
           <p className='text-xs text-foreground/75'>{date.toLocaleString('default', { month: 'short', year: '2-digit' })}</p>}
       </div>
     </div>
   )
-})
+}
 DayIndicator.displayName = "DayIndicator";
 
