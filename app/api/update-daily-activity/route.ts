@@ -19,19 +19,10 @@ export async function GET() {
     return await fetch(url)
       .then(res => res.json())
       .then(async (res) => {
-        const result = res;
-        const newDoc = {
-          decimal: result.cumulative_total.decimal,
-          digital: result.cumulative_total.digital,
-          text: result.cumulative_total.text,
-          start: result.start,
-          end: result.end,
-        }
-        console.log(newDoc);
+        const result = res.data[0].grand_total;
+        console.log(result);
         const query = Create(Ref(Collection("daily"), currentDate.replaceAll("-", "")), {
-          data: {
-            ...newDoc
-          },
+          data: { ...result },
         })
         const response = await client.query(query) as any;
         console.log(response)
