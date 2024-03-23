@@ -1,7 +1,7 @@
 'use client'
 import { getAllTimeHours, getDailyActivityData } from '@/db';
 import { motion, useInView } from 'framer-motion';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useRef, useState } from 'react';
 export interface DataPoint {
   date: string,
   decimal: number,
@@ -22,6 +22,7 @@ export default function DailyCodingActivity() {
   const [dataPoints, setDataPoints] = useState<{ [key: string]: DataPoint }>({});
   const [maxDecimal, setMaxDecimal] = useState(0);
   const [allTimeText, setAllText] = useState("");
+  let clickAudio = new Audio("/click.mp3")
 
   useEffect(() => {
     getAllTimeHours().
@@ -52,7 +53,6 @@ export default function DailyCodingActivity() {
 
   useEffect(() => {
     const today = new Date();
-    // Loop to generate dates going back 6 months
     let datesArray = [];
     for (let i = 0; i < 12; i++) {
       let year = today.getFullYear();
@@ -99,6 +99,7 @@ export default function DailyCodingActivity() {
 
   const barEntering = (data: DataPoint) => {
     setCurrentData(data);
+    clickAudio.play();
     setCursorVariant("line")
   };
   const barExiting = () => {
@@ -161,7 +162,6 @@ export default function DailyCodingActivity() {
                 <DayIndicator
                   height={normalize(dataPoints[day.date as string]?.decimal || 0, 0, maxDecimal, 0, scrollingContainer.height)}
                   dataPoint={dataPoints[day.date as string] || day}
-                  index={i}
                 />
               </div>
             )}
@@ -190,17 +190,17 @@ const Cursor = ({ variant, containerMeta, children }: { variant: string, contain
     default: {
       x: mousePosition.x - 20,
       y: mousePosition.y - 20,
-      // transition: {
-      //   type: "spring",
-      //   stiffness: 150,
-      //   damping: 18,
-      //   mass: .7,
-      //   scale: {
-      //     type: "spring",
-      //     stiffness: 350,
-      //     damping: 25
-      //   }
-      // }
+      transition: {
+        type: "spring",
+        stiffness: 150,
+        damping: 10,
+        mass: .7,
+        scale: {
+          type: "spring",
+          stiffness: 350,
+          damping: 25
+        }
+      }
     },
     line: {
       x: mousePosition.x,
@@ -221,8 +221,9 @@ const Cursor = ({ variant, containerMeta, children }: { variant: string, contain
   );
 };
 
-const DayIndicator = ({ dataPoint, height = 0 }: { dataPoint: DataPoint, height: number, index: number }) => {
+const DayIndicator = memo(({ dataPoint, height = 0 }: { dataPoint: DataPoint, height: number }) => {
   const date = new Date(dataPoint.date);
+  console.log(height)
   return (
     <div
       key={dataPoint.date}
@@ -235,6 +236,6 @@ const DayIndicator = ({ dataPoint, height = 0 }: { dataPoint: DataPoint, height:
       </div>
     </div>
   )
-}
+})
 DayIndicator.displayName = "DayIndicator";
 
