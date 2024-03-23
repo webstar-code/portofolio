@@ -25,7 +25,7 @@ export async function getDailyActivityData() {
   try {
     const items = await client.query(
       q.Map(
-        q.Paginate(Match(Index("sort_by_ref_desc")), { size: 100 }),
+        q.Paginate(Match(Index("sort_by_ref_desc")), { size: 365 }),
         q.Lambda(['ref'], q.Get(q.Var('ref')))
       )
     ) as { data: { data: DailyActivity }[] };
@@ -35,23 +35,7 @@ export async function getDailyActivityData() {
     throw error;
   }
 }
-const x = {
-  decimal
-    :
-    "3616.95",
-  digital
-    :
-    "3616:57",
-  start_date
-    :
-    "2020-04-26",
-  text
-    :
-    "3,617 hrs 49 mins",
-  total_seconds
-    :
-    13024167.854151
-}
+
 export async function getAllTimeHours() {
   try {
     const result = await client.query(

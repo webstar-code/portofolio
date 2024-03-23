@@ -17,10 +17,7 @@
     --yellow: 37 98% 53%;
   }
 }
-body {
-  pointer-events: none;
-  cursor: none;
-}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

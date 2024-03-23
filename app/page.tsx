@@ -2,6 +2,8 @@
 import { ThemeToggle } from "@/component/theme-toggle";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Icons } from "@/component/Icons";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,7 +18,10 @@ export default function Home() {
           <h1 className="text-3xl md:text-4xl font-normal leading-relaxed md:leading-relaxed">on a mission to craft exceptional digital experiences</h1>
           <Projects />
         </div>
-        <div className="absolute right-4 top-4 md:right-0">
+        <div className="absolute right-4 top-4 md:right-0 flex items-center gap-4">
+          <Link href={"/daily-coding-activity"}>
+            <Icons.barChart />
+          </Link>
           <ThemeToggle />
         </div>
       </div>
@@ -71,7 +76,8 @@ function Projects() {
               </div>
 
             </>
-          )}
+          )
+        }
         )}
       </div>
     </div>

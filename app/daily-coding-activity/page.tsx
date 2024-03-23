@@ -2,7 +2,6 @@
 import { getAllTimeHours, getDailyActivityData } from '@/db';
 import { motion, useInView } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react';
-
 export interface DataPoint {
   date: string,
   decimal: number,
@@ -11,10 +10,10 @@ export interface DataPoint {
 
 export default function DailyCodingActivity() {
   const [data, setData] = useState<DataPoint[]>([]);
-  const [scrollPos, setScrollPos] = useState(-300);
+  const [scrollPos, setScrollPos] = useState(-500);
   const [currentData, setCurrentData] = useState<DataPoint | null>(null);
   const [cursorVariant, setCursorVariant] = useState("default");
-  const [scrollingContainer, setScrollingContainer] = useState({ height: 0, x: 0, y: 0 });
+  const [scrollingContainer, setScrollingContainer] = useState({ width: 0, height: 0, x: 0, y: 0 });
   const firstElementRef = useRef(null);
   const lastElementRef = useRef(null);
   const scrollingContainerRef = useRef<HTMLDivElement>(null);
@@ -28,7 +27,7 @@ export default function DailyCodingActivity() {
     getAllTimeHours().
       then((result) => {
         const startDate = new Date(result.start_date).toLocaleString('default', { month: 'long', year: 'numeric' });
-        setAllText(`${(result.total_seconds / 3600).toFixed()} hrs since ${startDate}`)
+        setAllText(`${(result.total_seconds / 3600).toFixed()} hours since ${startDate}`)
       })
     getDailyActivityData()
       .then(result => {
@@ -55,7 +54,7 @@ export default function DailyCodingActivity() {
     const today = new Date();
     // Loop to generate dates going back 6 months
     let datesArray = [];
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 12; i++) {
       let year = today.getFullYear();
       let month = today.getMonth() - i;
       // Adjust the year and month if necessary
@@ -88,8 +87,8 @@ export default function DailyCodingActivity() {
       }
     };
     if (scrollingContainerRef.current) {
-      const { height, x, y } = scrollingContainerRef.current.getBoundingClientRect();
-      setScrollingContainer({ height, x, y })
+      const { width, height, x, y } = scrollingContainerRef.current.getBoundingClientRect();
+      setScrollingContainer({ width, height, x, y })
     }
     window.addEventListener('wheel', handleScroll);
     return () => {
@@ -112,7 +111,7 @@ export default function DailyCodingActivity() {
   }
 
   return (
-    <main className="w-full relative h-screen bg-background text-foreground overflow-hidden overflow-y-hidden pointer-events-auto">
+    <main className="w-full relative h-screen bg-background text-foreground overflow-hidden overflow-y-hidden pointer-events-auto cursor-none">
       <Cursor variant={cursorVariant} containerMeta={scrollingContainer} >
         {cursorVariant === "line" && currentData &&
           <div className='absolute -top-10 left-6 -translate-x-1/2'>
@@ -124,13 +123,33 @@ export default function DailyCodingActivity() {
       <div className="container h-full bg-background text-foreground py-6 flex flex-col">
         <div className="w-[90%] mx-auto flex items-center justify-between">
           <h3 className="text-base text-foreground">daily coding activity</h3>
-          <p>{allTimeText}</p>
+          <p className='text-sm lowercase'>{allTimeText}</p>
         </div>
-        <div className="w-full h-full flex flex-col grow items-center justify-center">
+        <div className="relative w-full h-full flex flex-col grow items-end justify-center">
+          <div className='bg-gradient-to-l from-background w-20 h-full fixed z-30 right-0 flex items-center'>
+            <div className='w-full h-[230px] flex flex-col justify-between items-end'>
+              {[...new Array(4)].map((_, index) =>
+                <div key={index} className='text-foreground/50 text-xs px-2'>
+                  {index != (4 - 1) ? `${Math.floor(maxDecimal / 4) * (4 - index - 1)}-` : null}
+                </div>
+              )}
+            </div>
+          </div>
+
           <motion.div
             ref={scrollingContainerRef}
-            initial={{ x: -500 }}
             animate={{ x: scrollPos }}
+            transition={{
+              type: "spring",
+              stiffness: 150,
+              damping: 18,
+              mass: .7,
+              scale: {
+                type: "spring",
+                stiffness: 350,
+                damping: 25
+              }
+            }}
             className="h-[256px] flex justify-start items-end">
             <div ref={firstElementRef}></div>
             {data.map((day, i) =>
@@ -188,7 +207,7 @@ const Cursor = ({ variant, containerMeta, children }: { variant: string, contain
       y: containerMeta.y,
       width: 2,
       height: containerMeta.height + 50,
-      backgroundColor: "red"
+      backgroundColor: "rgba(231, 0, 0, 1)"
     }
   }
 
@@ -208,11 +227,11 @@ const DayIndicator = ({ dataPoint, height = 0 }: { dataPoint: DataPoint, height:
     <div
       key={dataPoint.date}
       style={{ height: height + 20 }}
-      className={`relative w-[1px] bg-foreground z-10`}>
-      <div className={`absolute bottom-0 w-[1px] h-5${date.getDate() === 1 ? "bg-red" : "bg-foreground"} z-20`}></div>
+      className={`relative w-[1px] ${height + 20 > 20 ? "bg-foreground" : "bg-foreground/50"} z-10`}>
+      <div className={`absolute bottom-0 w-[1px] h-5 ${date.getDate() === 1 ? "bg-red" : "bg-none"} z-20`}></div>
       <div className={`absolute top-[105%] left-0 -translate-x-1/2`}>
         {date.getDate() == 1 &&
-          <p className='text-xs text-foreground/75'>{date.toLocaleString('default', { month: 'short', year: '2-digit' })}</p>}
+          <p className='text-xs text-center text-foreground/75'>{date.toLocaleString('default', { month: 'short', year: '2-digit' })}</p>}
       </div>
     </div>
   )
