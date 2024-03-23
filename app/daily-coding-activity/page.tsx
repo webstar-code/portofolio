@@ -1,5 +1,4 @@
 'use client'
-import { getAllTimeHours, getDailyActivityData } from '@/db';
 import { motion, useInView } from 'framer-motion';
 import React, { memo, useEffect, useRef, useState } from 'react';
 export interface DataPoint {
@@ -25,14 +24,18 @@ export default function DailyCodingActivity() {
   let clickAudio = new Audio("/click.mp3")
 
   useEffect(() => {
-    getAllTimeHours().
-      then((result) => {
+    fetch("/api/all-time")
+      .then(res => res.json())
+      .then((res) => {
+        const result = res.data
         const startDate = new Date(result.start_date).toLocaleString('default', { month: 'long', year: 'numeric' });
         setAllText(`${(result.total_seconds / 3600).toFixed()} hours since ${startDate}`)
       })
-    getDailyActivityData()
-      .then(result => {
-        const decimals = result.map((d) => Number(d.data.decimal));
+    fetch("/api/daily")
+      .then(res => res.json())
+      .then((res) => {
+        const result = res.data
+        const decimals = result.map((d: any) => Number(d.data.decimal));
         const max = Math.max(...decimals);
         setMaxDecimal(max * 1.5)
         let obj = {};
@@ -74,7 +77,6 @@ export default function DailyCodingActivity() {
     }).reverse());
   }, []);
 
-
   useEffect(() => {
     const handleScroll = (event: any) => {
       const scrollDir = event.deltaY < 1 ? 0 : 1;
@@ -95,7 +97,6 @@ export default function DailyCodingActivity() {
       window.removeEventListener('wheel', handleScroll);
     };
   }, [isFirstInView, isEndInView]);
-
 
   const barEntering = (data: DataPoint) => {
     setCurrentData(data);
