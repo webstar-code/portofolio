@@ -22,7 +22,7 @@ export async function GET() {
         const result = res.data[0].grand_total;
         console.log(result);
         const query = Create(Ref(Collection("daily"), currentDate.replaceAll("-", "")), {
-          data: { ...result },
+          data: { ...result, date: currentDate },
         })
         const response = await client.query(query) as any;
         console.log(response)
